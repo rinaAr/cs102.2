@@ -1,54 +1,15 @@
 from copy import deepcopy
 from random import choice, randint
-from typing import List, Optional, Tuple, Union
-
+from typing import List, Tuple, Union
 import pandas as pd
-
 
 def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
     return [["■"] * cols for _ in range(rows)]
 
-
-def remove_wall(
-    grid: List[List[Union[str, int]]], coord: Tuple[int, int]
-) -> List[List[Union[str, int]]]:
-    """
-
-    :param grid:
-    :param coord:
-    :return:
-    """
-
-    pass
-
-
-def bin_tree_maze(
-    rows: int = 15, cols: int = 15, random_exit: bool = True
-) -> List[List[Union[str, int]]]:
-    """
-
-    :param rows:
-    :param cols:
-    :param random_exit:
-    :return:
-    """
-
+def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> List[List[Union[str, int]]]:
     grid = create_grid(rows, cols)
-    empty_cells = []
-    for x, row in enumerate(grid):
-        for y, _ in enumerate(row):
-            if x % 2 == 1 and y % 2 == 1:
-                grid[x][y] = " "
-                empty_cells.append((x, y))
-
-    # 1. выбрать любую клетку
-    # 2. выбрать направление: наверх или направо.
-    # Если в выбранном направлении следующая клетка лежит за границами поля,
-    # выбрать второе возможное направление
-    # 3. перейти в следующую клетку, сносим между клетками стену
-    # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
-
-    # генерация входа и выхода
+    
+    # Place entrance and exit
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
         y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
@@ -58,88 +19,106 @@ def bin_tree_maze(
         x_out, y_out = rows - 1, 1
 
     grid[x_in][y_in], grid[x_out][y_out] = "X", "X"
-
+    
+    # Generating the maze using binary tree algorithm
+    for x in range(1, rows, 2):
+        for y in range(1, cols, 2):
+            grid[x][y] = " "
+            directions = []
+            if x > 1:
+                directions.append((-1, 0))
+            if y > 1:
+                directions.append((0, -1))
+            if directions:
+                direction = choice(directions)
+                dx, dy = direction
+                grid[x + dx][y + dy] = " "
+    
     return grid
 
+def get_neighbors(grid: List[List[Union[str, int]]], cell: Tuple[int, int]) -> List[Tuple[int, int]]:
+    neighbors = []
+    x, y = cell
+    rows, cols = len(grid), len(grid[0])
+    
+    # Check four possible neighbors: up, down, left, right
+    if x > 0 and grid[x - 1][y] != "■":
+        neighbors.append((x - 1, y))
+    if x < rows - 1 and grid[x + 1][y] != "■":
+        neighbors.append((x + 1, y))
+    if y > 0 and grid[x][y - 1] != "■":
+        neighbors.append((x, y - 1))
+    if y < cols - 1 and grid[x][y + 1] != "■":
+        neighbors.append((x, y + 1))
+    
+    return neighbors
 
-def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
-    """
+def solve_maze(grid: List[List[Union[str, int]]]) -> Tuple[List[List[Union[str, int]]], Union[Tuple[int, int], List[Tuple[int, int]]]]:
+    start = None
+    end = None
+    
+    # Find start (entrance) and end (exit) points
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == "X":
+                if start is None:
+                    start = (i, j)
+                else:
+                    end = (i, j)
+    
+    if not (start and end):
+        return grid, None
+    
+    # Implementing a simplified variation of Dijkstra's algorithm
+    queue = [(start, [start])]
+    visited = set()
+    
+    while queue:
+        current, path = queue.pop(0)
+        
+        if current == end:
+            for position in path[1:-1]:
+                x, y = position
+                grid[x][y] = "X"
+            return grid, path
+        
+        if current not in visited:
+            visited.add(current)
+            for neighbor in get_neighbors(grid, current):
+                if neighbor not in visited:
+                    queue.append((neighbor, path + [neighbor]))
+    
+    return grid, None
 
-    :param grid:
-    :return:
-    """
-
-    pass
-
-
-def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
-    """
-
-    :param grid:
-    :param k:
-    :return:
-    """
-
-    pass
-
-
-def shortest_path(
-    grid: List[List[Union[str, int]]], exit_coord: Tuple[int, int]
-) -> Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]:
-    """
-
-    :param grid:
-    :param exit_coord:
-    :return:
-    """
-    pass
-
-
-def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
-    """
-
-    :param grid:
-    :param coord:
-    :return:
-    """
-
-    pass
-
-
-def solve_maze(
-    grid: List[List[Union[str, int]]],
-) -> Tuple[List[List[Union[str, int]]], Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]]:
-    """
-
-    :param grid:
-    :return:
-    """
-
-    pass
-
-
-def add_path_to_grid(
-    grid: List[List[Union[str, int]]], path: Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]
-) -> List[List[Union[str, int]]]:
-    """
-
-    :param grid:
-    :param path:
-    :return:
-    """
-
-    if path:
-        for i, row in enumerate(grid):
-            for j, _ in enumerate(row):
-                if (i, j) in path:
-                    grid[i][j] = "X"
+def add_path_to_grid(grid: List[List[Union[str, int]]], path: Union[Tuple[int, int], List[Tuple[int, int]]]) -> List[List[Union[str, int]]]:
+    if isinstance(path, tuple):
+        path = [path]
+    
+    for x, y in path:
+        grid[x][y] = "X"
+    
     return grid
 
+def visualize_grid(grid: List[List[Union[str, int]]]) -> None:
+    df = pd.DataFrame(grid)
+    print(df)
 
 if __name__ == "__main__":
-    print(pd.DataFrame(bin_tree_maze(15, 15)))
-    GRID = bin_tree_maze(15, 15)
-    print(pd.DataFrame(GRID))
-    _, PATH = solve_maze(GRID)
-    MAZE = add_path_to_grid(GRID, PATH)
-    print(pd.DataFrame(MAZE))
+    # Generate maze
+    maze = bin_tree_maze(15, 15)
+    
+    # Print initial maze
+    print("Initial maze:")
+    visualize_grid(maze)
+    
+    # Solve maze
+    solved_maze, path = solve_maze(deepcopy(maze))
+    
+    # Print solved maze
+    if path:
+        print("\nSolved maze with path:")
+        maze_with_path = add_path_to_grid(solved_maze, path)
+        visualize_grid(maze_with_path)
+    else:
+        print("\nNo path found in maze.")
+
