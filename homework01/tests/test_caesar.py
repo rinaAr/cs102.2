@@ -1,7 +1,7 @@
 import random
 import string
 import unittest
-import caesar
+import homework01.caesar
 
 class CaesarTestCase(unittest.TestCase):
     def test_encrypt(self):
