@@ -22,5 +22,5 @@ jobs:
     - name: Run tests
       run: |
         python -m unittest discover -s homework01/tests
-        python -m unittest discover -s homework02/test_sudoku.py
+        python -m unittest discover -s test_sudoku.py
 
