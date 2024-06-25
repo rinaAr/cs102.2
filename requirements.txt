@@ -12,3 +12,4 @@ pandas==1.1.4
 matplotlib==3.3.3
 python-louvain==0.14
 numpy==1.26.4 
+py-sudoku==1.0.3
