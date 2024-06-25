@@ -4,7 +4,6 @@ import unittest
 
 import vigenere
 
-
 class VigenereTestCase(unittest.TestCase):
     def test_encrypt(self):
         cases = [
