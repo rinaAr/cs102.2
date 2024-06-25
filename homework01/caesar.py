@@ -6,7 +6,7 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
             char = chr((ord(char) - shift_base + shift) % 26 + shift_base)
         ciphertext += char
     return ciphertext
-
+ 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     plaintext = ""
     for char in ciphertext:
