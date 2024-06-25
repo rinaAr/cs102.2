@@ -7,9 +7,5 @@ responses==0.12.1
 requests==2.24.0
 httpretty==1.0.2
 tqdm==4.52.0
-networkx==2.5
-pandas==1.1.4
-matplotlib==3.3.3
-python-louvain==0.14
 numpy==1.26.4 
 py-sudoku==1.0.3
