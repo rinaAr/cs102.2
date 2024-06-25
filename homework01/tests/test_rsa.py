@@ -1,6 +1,6 @@
 import random
 import unittest
-from homework01 import rsa.py
+from homework01 import rsa
 
 
 class RSATestCase(unittest.TestCase):
