@@ -9,3 +9,4 @@ httpretty==1.0.2
 tqdm==4.52.0
 numpy==1.26.4 
 py-sudoku==1.0.3
+pygame==2.5.2
