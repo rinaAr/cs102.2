@@ -2,16 +2,13 @@ import pathlib
 import random
 import typing as tp
 
-import pygame
-from pygame.locals import *
-
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
 
 
 class GameOfLife:
-    def __init__(self, size: tp.Tuple[int, int], randomize: bool = True, max_generations: tp.Optional[float] = float("inf")) -> None:
+    def __init__(self, size: tp.Tuple[int, int], randomize: bool = True, max_generations: tp.Optional[int] = float("inf")) -> None:
         self.rows, self.cols = size
         self.prev_generation = self.create_grid()
         self.curr_generation = self.create_grid(randomize=randomize)
@@ -40,7 +37,6 @@ class GameOfLife:
             return [[random.randint(0, 1) for _ in range(self.cols)] for _ in range(self.rows)]
         else:
             return [[0 for _ in range(self.cols)] for _ in range(self.rows)]
-
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
@@ -77,12 +73,12 @@ class GameOfLife:
             self.curr_generation = self.get_next_generation()
             self.generations += 1
 
-@property
-def is_max_generations_exceeded(self) -> bool:
-    """
-    Не превысило ли текущее число поколений максимально допустимое.
-    """
-    return self.generations > self.max_generations
+    @property
+    def is_max_generations_exceeded(self) -> bool:
+        """
+        Не превысило ли текущее число поколений максимально допустимое.
+        """
+        return self.generations >= self.max_generations
 
     @property
     def is_changing(self) -> bool:
