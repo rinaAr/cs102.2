@@ -35,4 +35,4 @@ jobs:
     # Шаг 4: Запустить тесты
     - name: Run tests
       run: |
-        pytest tests/lifegame_test.py  # Запуск теста
+        pytest homework07/tests/lifegame_test.py  # Запуск теста
