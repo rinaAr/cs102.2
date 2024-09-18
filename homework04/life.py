@@ -82,21 +82,20 @@ class GameOfLife:
         return next_gen
 
     def step(self) -> None:
-        """
-        Выполнить один шаг игры.
-        """
-        if self.is_max_generations_exceeded:
-            return
+    """
+    Выполнить один шаг игры.
+    """
+    if not self.is_max_generations_exceeded:
         self.prev_generation = self.curr_generation
         self.curr_generation = self.get_next_generation()
         self.generations += 1
 
-    @property
-    def is_max_generations_exceeded(self) -> bool:
-        """
-        Не превысило ли текущее число поколений максимально допустимое.
-        """
-        return self.generations > self.max_generations
+@property
+def is_max_generations_exceeded(self) -> bool:
+    """
+    Не превысило ли текущее число поколений максимально допустимое.
+    """
+    return self.generations > self.max_generations
 
     @property
     def is_changing(self) -> bool:
