@@ -1,6 +1,6 @@
 from bottle import route, run, template, request, redirect
 
-from scrapper import get_news
+from scraputils import get_news
 from db import News, session
 from bayes import NaiveBayesClassifier
 
