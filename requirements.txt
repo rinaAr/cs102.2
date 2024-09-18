@@ -19,3 +19,4 @@ sqlalchemy==1.4.46
 scikit-learn==1.2.2
 beautifulsoup4==4.11.2
 vkapi==1.1
+responses==0.25.3
