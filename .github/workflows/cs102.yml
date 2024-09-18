@@ -30,4 +30,4 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest homework06/tests/test_bayes.py  homework06/tests/test_hackernews.py  # Путь к тестам, проверьте, что он правильный
+        pytest homework04/tests/test_life.py  homework04/tests/test_life_photo.py  # Путь к тестам, проверьте, что он правильный
