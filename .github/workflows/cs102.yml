@@ -1,13 +1,20 @@
-name: CS102 Workflow
-  
-on: [push, pull_request]
+name: GameOfLife
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Set up Python
@@ -17,8 +24,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install pygame pytest
 
     - name: Run tests
-      run: |
-        python -m unittest discover -s homework01/tests && python -m unittest discover -s homework02 -p 'test_sudoku.py'
+      run: pytest homework07/tests
