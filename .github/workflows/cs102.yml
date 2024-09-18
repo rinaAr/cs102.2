@@ -30,4 +30,4 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest homework04/tests/test_life.py  homework04/tests/test_life_proto.py
+        pytest homework04/test_life.py  homework04/test_life_proto.py
