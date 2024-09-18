@@ -1,38 +1,31 @@
 name: Run tests
 
-# Укажите событие, которое будет запускать этот workflow
 on:
   push:
     branches:
-      - main  # Запускать при пуше в ветку main
+      - main  # Или другая ветка
   pull_request:
     branches:
-      - main  # Запускать при создании pull request в ветку main
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    # Шаг 1: Checkout кода
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Шаг 2: Установить версию Python
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'  # Замените на нужную версию Python
+        python-version: '3.x'
 
-    # Шаг 3: Установить зависимости
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest  # Устанавливаем pytest для тестов
-        # Установить другие зависимости, если есть requirements.txt
+        pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    # Шаг 4: Запустить тесты
     - name: Run tests
-      run: |
-        pytest homework07/tests/lifegame_test.py  # Запуск теста
+      run: pytest tests/  # Убедитесь, что эта строка указывает на правильную папку с тестами
