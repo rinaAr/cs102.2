@@ -30,4 +30,4 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest homework07/tests/  # Путь к тестам, проверьте, что он правильный
+        pytest homework07/lifegame_test.py  # Путь к тестам, проверьте, что он правильный
