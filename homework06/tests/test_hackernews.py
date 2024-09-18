@@ -2,7 +2,6 @@ import unittest
 from unittest import mock
 from unittest.mock import call
 
-from bottle import boddle
 from db import News
 from hackernews import add_label, classify_news, update_news
 
@@ -10,7 +9,7 @@ from hackernews import add_label, classify_news, update_news
 class TestHackernews(unittest.TestCase):
     @mock.patch("hackernews.session")
     def test_add_label(self, session):
-        with boddle(query={"id": 1, "label": "never"}):
+        with mock.patch('bottle.request.query', {'id': 1, 'label': 'never'}):  # Имитация запроса
             news = News(
                 title="Ask HN: Do you use an optimization solver? Which one? Do you like it?",
                 author="ryan-nextmv",
@@ -20,7 +19,9 @@ class TestHackernews(unittest.TestCase):
                 label=None,
             )
             session.return_value.query.return_value.get.return_value = news
-            add_label()
+            
+            add_label()  # Вызов функции для тестирования
+
             self.assertTrue(news.label == "never")
             self.assertTrue(session.mock_calls[-1] == call().commit())
 
@@ -51,16 +52,16 @@ class TestHackernews(unittest.TestCase):
             },
         ]
         get_news.return_value = news
+        
         session.return_value.query.return_value.filter.return_value.first.side_effect = [
-            True,
-            False,
-            False,
+            True,  # Первая новость уже существует
+            False, # Вторая новость не существует
+            False, # Третья новость не существует
         ]
-        update_news()
-        n_commit = 0
-        for one_call in session.mock_calls:
-            if one_call == call().commit() and one_call != call():
-                n_commit += 1
+        
+        update_news()  # Вызов функции для тестирования
+
+        n_commit = sum(1 for call in session.mock_calls if call == call().commit())
         self.assertEqual(2, n_commit)
 
     @mock.patch("hackernews.session")
@@ -130,14 +131,15 @@ class TestHackernews(unittest.TestCase):
                 points=171,
             ),
         ]
+        
         session.return_value.query.return_value.filter.return_value.all.side_effect = [
-            news_cl,
-            news_not_cl,
+            news_cl,     # Классифицированные новости
+            news_not_cl, # Неклассифицированные новости
         ]
+        
         expected = [news_not_cl[2], news_not_cl[0], news_not_cl[1]]
-        actual = classify_news()
+        actual = classify_news()  # Вызов функции для тестирования
         self.assertEqual(expected, actual)
-
 
 if __name__ == '__main__':
     unittest.main()
