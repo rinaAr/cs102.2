@@ -1,6 +1,7 @@
 import pytest
 from lifegame import GameOfLife
 
+                  
 def test_create_grid_default():
     game = GameOfLife(320, 240, 20)
     grid = game.create_grid(randomize=False)
