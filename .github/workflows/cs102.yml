@@ -29,4 +29,4 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run tests
-      run: pytest tests/  # Убедитесь, что эта строка указывает на правильную папку с тестами
+      run: pytest homework07/tests/  # Убедитесь, что эта строка указывает на правильную папку с тестами
